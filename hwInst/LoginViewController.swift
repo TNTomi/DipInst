@@ -1,9 +1,3 @@
-//
-//  LoginViewController.swift
-//  hwInst
-//
-//  Created by Артём Горовой on 9.01.25.
-//
 
 //
 //  LoginViewController.swift

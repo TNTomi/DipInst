@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-
 final class ViewController: UIViewController {
     
     private var imageManager: ImageManagerProtocol = ImageManager()
@@ -22,7 +21,7 @@ final class ViewController: UIViewController {
         collectionView.backgroundColor = UIColor(hex: "#C9E3F2")
         return collectionView
     }()
-
+    
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Back", for: .normal)
@@ -30,7 +29,7 @@ final class ViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hex: "#C9E3F2")
@@ -38,7 +37,7 @@ final class ViewController: UIViewController {
         loadSavedImages()
         navigationItem.hidesBackButton = true
     }
-
+    
     private func loadSavedImages() {
         let savedImageURLs = imageManager.getSavedImageURLs()
         imageItems = savedImageURLs.compactMap { url -> ImageItem? in
@@ -49,17 +48,21 @@ final class ViewController: UIViewController {
         }
         collectionView.reloadData()
     }
-
+    
     private func setupUI() {
+        // Back Button
         view.addSubview(backButton)
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        backButton.addAction(UIAction { _ in
+            self.backButtonTapped()
+        }, for: .touchUpInside)
         backButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(15)
             make.width.equalTo(80)
             make.height.equalTo(40)
         }
-
+        
+        // Collection View
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.bottom).offset(10)
@@ -71,7 +74,7 @@ final class ViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
     }
-
+    
     @objc private func backButtonTapped() {
         navigationController?.popToRootViewController(animated: true)
     }
@@ -82,7 +85,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageItems.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else {
             return UICollectionViewCell()
@@ -91,7 +94,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         cell.configure(with: imageItem.url)
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedImageItem = imageItems[indexPath.item]
         
@@ -104,7 +107,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             }
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (view.frame.width - 50) / 4
         return CGSize(width: width, height: width)

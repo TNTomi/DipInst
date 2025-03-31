@@ -1,3 +1,17 @@
+
+//
+//  LoadScreen.swift
+//  hwInst
+//
+//  Created by Артём Горовой on 9.01.25.
+//
+//
+//  LoadScreen.swift
+//  hwInst
+//
+//  Created by Артём Горовой on 9.01.25.
+//
+
 import UIKit
 import SnapKit
 
@@ -170,4 +184,5 @@ extension LoadScreen: UIImagePickerControllerDelegate, UINavigationControllerDel
         dismiss(animated: true)
     }
 }
+
 

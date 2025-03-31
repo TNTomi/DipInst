@@ -19,24 +19,24 @@ final class FullScreenImageViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return button
     }()
-
+    
     init(image: UIImage, date: Date) {
         super.init(nibName: nil, bundle: nil)
         imageView.image = image
         dateLabel.text = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
         modalPresentationStyle = .fullScreen
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupUI()
     }
-
+    
     private func setupUI() {
         view.addSubview(imageView)
         imageView.contentMode = .scaleAspectFit
@@ -49,7 +49,9 @@ final class FullScreenImageViewController: UIViewController {
         closeButton.backgroundColor = .white
         closeButton.setTitleColor(.black, for: .normal)
         closeButton.layer.cornerRadius = 10
-        closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        closeButton.addAction(UIAction { _ in
+            self.dismissView()
+        }, for: .touchUpInside)
         
         view.addSubview(closeButton)
         closeButton.snp.makeConstraints { make in
@@ -69,7 +71,9 @@ final class FullScreenImageViewController: UIViewController {
         }
         
         view.addSubview(backButton)
-        backButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        backButton.addAction(UIAction { _ in
+            self.dismissView()
+        }, for: .touchUpInside)
         backButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
             make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(15)
@@ -77,10 +81,9 @@ final class FullScreenImageViewController: UIViewController {
             make.height.equalTo(40)
         }
     }
-
-    @objc private func dismissView() {
+    
+    private func dismissView() {
         dismiss(animated: true, completion: nil)
     }
 }
-
 
